@@ -34,6 +34,7 @@
   import PhoneBody from "./components/PhoneBody";
   import posts from "../data/posts";
   import filters from "../data/filters";
+  import EventBus from "./event-bus.js";
 
   export default {
     name: "App",
@@ -60,6 +61,11 @@
         };
         document.querySelector("#file").value = "";
       }
+    },
+    created() {
+      EventBus.$on("filter-selected", evt => {
+        this.selectedFilter = evt.filter;
+      });
     },
     components: {
       "phone-body": PhoneBody

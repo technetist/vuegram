@@ -8,9 +8,14 @@
     </div>
     <div v-if="step === 2">
       <div class="selected-image"
+           :class="selectedFilter"
            :style="{ backgroundImage: 'url(' + image + ')' }"></div>
       <div class="filter-container">
-        <!-- Where filter choices will be -->
+        <filter-type v-for="filter in filters"
+                     :filter="filter"
+                     :image="image"
+                     :key="filters.indexOf(filter)">
+        </filter-type>
       </div>
     </div>
   </div>
@@ -18,6 +23,7 @@
 
 <script>
   import VuegramPost from "./VuegramPost";
+  import FilterType from "./FilterType";
 
   export default {
     name: "PhoneBody",
@@ -25,10 +31,12 @@
       step: Number,
       posts: Array,
       filters: Array,
-      image: String
+      image: String,
+      selectedFilter: String
     },
     components: {
-      "vuegram-post": VuegramPost
+      "vuegram-post": VuegramPost,
+      "filter-type": FilterType
     }
   };
 </script>
