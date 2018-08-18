@@ -3,6 +3,21 @@
     <div class="app-phone">
       <div class="phone-header">
         <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1211695/vue_gram_logo_cp.png" />
+        <a class="cancel-cta"
+           v-if="step === 2 || step === 3"
+           @click="goToHome">
+          Cancel
+        </a>
+        <a class="next-cta"
+           v-if="step === 2"
+           @click="step++">
+          Next
+        </a>
+        <a class="next-cta"
+           v-if="step === 3"
+           @click="sharePost">
+          Share
+        </a>
       </div>
       <phone-body :step="step"
                   :posts="posts"
@@ -12,7 +27,7 @@
                   v-model="caption"
       />
       <div class="phone-footer">
-        <div class="home-cta">
+        <div class="home-cta" @click="goToHome">
           <i class="fas fa-home fa-lg"></i>
         </div>
         <div class="upload-cta">
@@ -20,7 +35,8 @@
                  name="file"
                  id="file"
                  class="inputfile"
-                 @change="uploadImage"/>
+                 @change="uploadImage"
+                 :disabled="step !== 1"/>
           <label for="file">
             <i class="far fa-plus-square fa-lg"></i>
           </label>
@@ -60,6 +76,25 @@
           this.step = 2;
         };
         document.querySelector("#file").value = "";
+      },
+      sharePost() {
+        const post = {
+          username: "fullstack_vue",
+          userImage:
+            "https://s3-us-west-2.amazonaws.com/s.cdpn.io/1211695/vue_lg_bg.png",
+          postImage: this.image,
+          likes: 0,
+          caption: this.caption,
+          filter: this.filterType
+        };
+        this.posts.unshift(post);
+        this.goToHome();
+      },
+      goToHome: function () {
+        this.image = "";
+        this.selectedFilter = "";
+        this.caption = "";
+        this.step = 1;
       }
     },
     created() {
